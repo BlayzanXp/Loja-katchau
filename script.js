@@ -1,19 +1,23 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
 
-
+// === CONFIGURAÇÃO DO FIREBASE (SUBSTITUA PELAS SUAS CHAVES) ===
 const firebaseConfig = {
-    apiKey: "AlzaSyA0u9w69h1bflyVju3At_cVweU_zdF4Wnl",
-    authDomain: "katchau-86464.firebaseapp.com",
-    projectId: "katchau-86464",
-    storageBucket: "katchau-86464.firebaseorage.app",
-    messagingSenderId: "482704550968",
-    appId: "1:482704550968:web:708a93ea7f1ca8898ecacd"
+    apiKey: "SUA_API_KEY",
+    authDomain: "SEU_AUTH_DOMAIN",
+    projectId: "SEU_PROJECT_ID",
+    storageBucket: "SEU_STORAGE_BUCKET",
+    messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+    appId: "SEU_APP_ID"
 };
+
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const usersCollection = collection(db, "users");
 const carsCollection = collection(db, "cars");
+
+// Caminho para a imagem de perfil padrão
+const DEFAULT_PROFILE_PIC = 'imagens/default-profile.png';
 
 // === FUNÇÕES PRINCIPAIS ===
 document.addEventListener('DOMContentLoaded', function() {
@@ -30,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isLoggedIn && currentUser) {
                 showLoginHeader.style.display = 'none';
                 profileLink.style.display = 'block';
-                const storedPic = currentUser.profilePicUrl || "https://via.placeholder.com/40/e0e6ed/7f8c8d?text=User";
+                const storedPic = currentUser.profilePicUrl || DEFAULT_PROFILE_PIC;
                 if (headerProfilePic) {
                     headerProfilePic.src = storedPic;
                 }
@@ -98,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const logMessage = document.getElementById('log-message');
 
             try {
-                // Procura o usuário no Firebase com base no nome de usuário e senha
                 const q = query(usersCollection, where("username", "==", usernameInput), where("password", "==", passwordInput));
                 const querySnapshot = await getDocs(q);
 
@@ -149,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                // VERIFICA SE O USUÁRIO JÁ EXISTE NO FIREBASE
                 const q = query(usersCollection, where("username", "==", username));
                 const querySnapshot = await getDocs(q);
                 if (!querySnapshot.empty) {
@@ -164,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     password: password, 
                     email: email,
                     dob: dob,
-                    profilePicUrl: "https://via.placeholder.com/150/e0e6ed/7f8c8d?text=PERFIL" 
+                    profilePicUrl: null // Define a URL da foto de perfil como nula no cadastro
                 };
 
                 await addDoc(usersCollection, userData);
@@ -271,15 +273,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const changePicBtn = document.getElementById('change-pic-btn');
         const saveProfileBtn = document.getElementById('save-profile-btn');
         const profileMessage = document.getElementById('profile-message');
+        const profilePicMessage = document.getElementById('profile-pic-message');
 
         function loadProfileData() {
             if (currentUser) {
                 document.getElementById('profile-username').value = currentUser.username || '';
                 document.getElementById('profile-email').value = currentUser.email || '';
                 document.getElementById('profile-dob').value = currentUser.dob || '';
-                const storedPic = currentUser.profilePicUrl;
-                if (storedPic) {
-                    profilePic.src = storedPic;
+                
+                // Lógica da foto de perfil
+                if (currentUser.profilePicUrl) {
+                    profilePic.src = currentUser.profilePicUrl;
+                    profilePicMessage.textContent = ''; // Limpa a mensagem
+                } else {
+                    profilePic.src = DEFAULT_PROFILE_PIC;
+                    profilePicMessage.textContent = 'Adicione uma foto de perfil!';
                 }
             } else {
                 window.location.href = 'page1.html'; 
@@ -380,28 +388,46 @@ document.addEventListener('DOMContentLoaded', function() {
             profilePicInput.click();
         });
 
-        profilePicInput.addEventListener('change', function(event) {
+        profilePicInput.addEventListener('change', async function(event) {
             const file = event.target.files[0];
             if (file && currentUser) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     profilePic.src = e.target.result;
-                    currentUser.profilePicUrl = e.target.result; 
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     
-                    let allUsers = JSON.parse(localStorage.getItem('allUsers')) || [];
-                    const userIndex = allUsers.findIndex(user => user.username === currentUser.username);
-                    if (userIndex !== -1) {
-                        allUsers[userIndex] = currentUser;
-                        localStorage.setItem('allUsers', JSON.stringify(allUsers));
+                    // Encontre o documento do usuário no Firestore para atualizar
+                    const q = query(usersCollection, where("username", "==", currentUser.username));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        const docId = querySnapshot.docs[0].id;
+                        const userRef = doc(db, "users", docId);
+                        
+                        try {
+                            await updateDoc(userRef, { profilePicUrl: e.target.result });
+                            
+                            // Atualiza o localStorage com o novo URL
+                            currentUser.profilePicUrl = e.target.result;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            
+                            profilePicMessage.textContent = 'Foto de perfil salva com sucesso!';
+                            profilePicMessage.style.color = 'green';
+                            
+                            // Atualiza a imagem do cabeçalho
+                            checkLoginStatus(); 
+                        } catch (e) {
+                            console.error("Erro ao salvar foto de perfil: ", e);
+                            profilePicMessage.textContent = 'Erro ao salvar a foto. Tente novamente.';
+                            profilePicMessage.style.color = 'red';
+                        }
+                    } else {
+                         profilePicMessage.textContent = 'Erro: Usuário não encontrado no banco de dados.';
+                         profilePicMessage.style.color = 'red';
                     }
 
-                    profileMessage.textContent = 'Foto de perfil salva com sucesso!';
-                    profileMessage.style.color = 'green';
                     setTimeout(() => {
-                        profileMessage.textContent = '';
+                        profilePicMessage.textContent = '';
                     }, 3000);
-                    checkLoginStatus(); 
                 }
                 reader.readAsDataURL(file);
             }
@@ -416,7 +442,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
 
                 try {
-                    // Encontre o documento do usuário no Firebase para atualizar
                     const q = query(usersCollection, where("username", "==", currentUser.username));
                     const querySnapshot = await getDocs(q);
                     if (!querySnapshot.empty) {
@@ -424,7 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         const userRef = doc(db, "users", docId);
                         await updateDoc(userRef, updatedData);
                         
-                        // Atualiza os dados no localStorage para o usuário logado
                         currentUser.email = updatedData.email;
                         currentUser.dob = updatedData.dob;
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
