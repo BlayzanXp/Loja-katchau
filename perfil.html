@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://via.placeholder.com/120x30/ecf0e1/34495e?text=WEBMOTORS" alt="Logo Webmotors">
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">Comprar</a>
+            <a href="index.html">Vender</a>
+            <a href="index.html">Serviços</a>
+            <a href="index.html">Ajuda</a>
+        </nav>
+        <div class="user-actions">
+            <a id="show-login-header" href="page1.html">Entrar</a>
+            <a href="perfil.html" id="profile-link" style="display: none;">
+                <img id="header-profile-pic" src="https://via.placeholder.com/40/e0e6ed/7f8c8d?text=User" alt="Foto de Perfil">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="profile-container">
+            <div class="profile-pic-area">
+                <img id="profile-pic" src="https://via.placeholder.com/150/e0e6ed/7f8c8d?text=PERFIL" alt="Foto de Perfil">
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+                <button id="change-pic-btn">Trocar Foto</button>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-field">
+                    <label for="profile-username">Usuário:</label>
+                    <input type="text" id="profile-username" readonly>
+                </div>
+                <div class="profile-field">
+                    <label for="profile-email">E-mail:</label>
+                    <input type="email" id="profile-email">
+                </div>
+                <div class="profile-field">
+                    <label for="profile-dob">Data de Nascimento:</label>
+                    <input type="date" id="profile-dob">
+                </div>
+                <button id="save-profile-btn">Salvar Alterações</button>
+                <p id="profile-message" class="profile-message"></p>
+                <button id="logout-btn" class="logout-btn">Sair</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
