@@ -431,3 +431,63 @@ h2 {
     font-size: 1rem;
     margin-top: 1rem;
 }
+/* Estilos para a seção de Meus Anúncios no perfil */
+#user-cars-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+#user-cars-section h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.car-list-user {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 2 ou 3 colunas de carros */
+    gap: 1rem;
+    justify-content: center; /* Centraliza os cards se não preencherem a linha toda */
+}
+
+.car-item {
+    background-color: var(--bg-color); /* Fundo um pouco mais claro */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 5px var(--shadow-light);
+    transition: transform 0.2s;
+}
+
+.car-item:hover {
+    transform: translateY(-3px);
+}
+
+.car-item img {
+    width: 80px; /* Tamanho da imagem do carro */
+    height: 60px;
+    object-fit: cover; /* Garante que a imagem preencha sem distorcer */
+    border-radius: 4px;
+    flex-shrink: 0; /* Impede que a imagem encolha */
+}
+
+.car-item div {
+    text-align: left;
+}
+
+.car-item h4 {
+    font-size: 1rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.car-item p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin: 0;
+}
