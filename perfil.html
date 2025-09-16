@@ -3,64 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil</title>
+    <title>Meu Perfil - Katchau</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="imagens/favcon.ico" alt="logo katchau">
-        </div>
+    <header class="main-header">
+        <a href="index.html" class="logo-link">
+            <img src="imagens/logo.png" alt="Logo Katchau" class="logo">
+        </a>
         <nav class="main-nav">
-            <a href="index.html">Comprar</a>
-            <a href="vender.html">Vender</a>
-            <a href="index.html">Serviços</a>
-            <a href="index.html">Ajuda</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Catálogo</a></li>
+                <li><a href="vender.html">Vender</a></li>
+            </ul>
         </nav>
         <div class="user-actions">
-            <a id="show-login-header" href="page1.html">Entrar</a>
-            <a href="perfil.html" id="profile-link" style="display: none;">
-                <img id="header-profile-pic" src="https://via.placeholder.com/40/e0e6ed/7f8c8d?text=User" alt="Foto de Perfil">
-            </a>
+            <div id="show-login-header" class="header-login-links">
+                <a href="page1.html" class="login-link">Login</a> /
+                <a href="page2.html" class="register-link">Cadastrar</a>
+            </div>
+            <div id="profile-link" class="header-profile-section" style="display: none;">
+                <a href="perfil.html" class="profile-link">
+                    <img id="header-profile-pic" src="imagens/default-profile.png" alt="Foto de Perfil" class="header-profile-pic">
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
+    <main class="profile-main">
         <section class="profile-container">
-            <div class="profile-pic-area">
-                <img id="profile-pic" src="https://via.placeholder.com/150/e0e6ed/7f8c8d?text=PERFIL" alt="Foto de Perfil">
+            <h2>Meu Perfil</h2>
+            <div class="profile-info-section">
+                <div class="profile-pic-container">
+                    <img id="profile-pic" src="imagens/default-profile.png" alt="Foto de Perfil">
+                    <p id="profile-pic-message" class="message-text"></p>
+                </div>
                 <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
-                <button id="change-pic-btn">Trocar Foto</button>
+                <button id="change-pic-btn" class="edit-btn">Trocar Foto</button>
             </div>
-
-            <div class="profile-details">
-                <div class="profile-field">
-                    <label for="profile-username">Usuário:</label>
+            <form id="profile-form" class="profile-form">
+                <div class="form-group">
+                    <label for="profile-username">Nome de Usuário:</label>
                     <input type="text" id="profile-username" readonly>
                 </div>
-                <div class="profile-field">
+                <div class="form-group">
                     <label for="profile-email">E-mail:</label>
                     <input type="email" id="profile-email">
                 </div>
-                <div class="profile-field">
+                <div class="form-group">
                     <label for="profile-dob">Data de Nascimento:</label>
                     <input type="date" id="profile-dob">
                 </div>
-                <button id="save-profile-btn">Salvar Alterações</button>
-                <p id="profile-message" class="profile-message"></p>
-                <button id="logout-btn" class="logout-btn">Sair</button>
-            </div>
-            
-            <hr>
-            
-            <div id="user-cars-section">
-                </div>
+                <button id="save-profile-btn" type="button" class="submit-btn">Salvar Alterações</button>
+            </form>
+            <p id="profile-message" class="message-text"></p>
         </section>
+
+        <section id="user-cars-section" class="user-cars-section">
+            </section>
+        
+        <button id="logout-btn" class="logout-btn">Sair</button>
     </main>
 
     <script type="module" src="script.js"></script>

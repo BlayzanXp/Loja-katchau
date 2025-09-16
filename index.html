@@ -3,81 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja de Carros - Webmotors Style</title>
+    <title>Katchau</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-
-    <header>
-        <div class="logo">
-            <img src="imagens/logo.png" alt="Logo Katchau">
-        </div>
+    <header class="main-header">
+        <a href="index.html" class="logo-link">
+            <img src="imagens/logo.png" alt="Logo Katchau" class="logo">
+        </a>
         <nav class="main-nav">
-            <a href="#">Comprar</a>
-            <a href="vender.html">Vender</a>
-            <a href="#">Serviços</a>
-            <a href="#">Ajuda</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Catálogo</a></li>
+                <li><a href="vender.html">Vender</a></li>
+            </ul>
         </nav>
         <div class="user-actions">
-            <a id="show-login-header" href="page1.html">Entrar</a>
-            <a href="perfil.html" id="profile-link" style="display: none;">
-                <img id="header-profile-pic" src="imagens/favcon.ico" alt="Foto de Perfil">
-            </a>
+            <div id="show-login-header" class="header-login-links">
+                <a href="page1.html" class="login-link">Login</a> /
+                <a href="page2.html" class="register-link">Cadastrar</a>
+            </div>
+            <div id="profile-link" class="header-profile-section" style="display: none;">
+                <a href="perfil.html" class="profile-link">
+                    <img id="header-profile-pic" src="imagens/default-profile.png" alt="Foto de Perfil" class="header-profile-pic">
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section class="store-section">
-            <h2>Lojas Oficiais</h2>
-            <div class="store-container">
-                <div class="store-card">
-                    <img src="imagens/audi.png" alt="Localiza Seminovos">
-                </div>
-                <div class="store-card">
-                    <img src="imagens/bmw.png" alt="Toyota Gazoo Racing">
-                </div>
-                <div class="store-card">
-                    <img src="imagens/ford.png" alt="Volvo">
-                </div>
-                <div class="store-card">
-                    <img src="imagens/mercedes.png" alt="GWM">
-                </div>
-                <div class="store-card">
-                    <img src="imagens/toyota.png" alt="Seminovos Movida">
-                </div>
-                <div class="store-card">
-                    <img src="imagens/porsche.png" alt="BYD">
-                </div>
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Bem-vindo ao Katchau</h1>
+                <p>Encontre o carro dos seus sonhos ou anuncie o seu!</p>
             </div>
         </section>
 
-        <section class="solutions-section">
-            <h2>Soluções Webmotors</h2>
-            <div class="solutions-grid">
-                <a href="#car-listings" class="solution-card">
-                    <div class="icon-box"><i class="fa-solid fa-car"></i></div>
-                    <h3>Comprar</h3>
-                    <p>Encontre os melhores carros e oportunidades para você.</p>
-                </a>
-                <div class="solution-card">
-                    <div class="icon-box"><i class="fa-solid fa-tags"></i></div>
-                    <h3>Vender</h3>
-                    <p>Venda fácil e rápido. Anuncie para milhões e feche o melhor negócio.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="car-listings">
-            <h2>Carros à Venda</h2>
+        <section class="catalog-section">
+            <h2>Nosso Catálogo</h2>
             <div class="car-grid">
-            </div>
+                </div>
         </section>
     </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 Katchau. Todos os direitos reservados.</p>
+    </footer>
 
     <script type="module" src="script.js"></script>
 </body>

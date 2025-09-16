@@ -1,22 +1,26 @@
+// Importa as funções necessárias do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-storage.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 
-// === CONFIGURAÇÃO DO FIREBASE (SUBSTITUA PELAS SUAS CHAVES) ===
+
+// === CONFIGURAÇÃO DO FIREBASE (SUAS CHAVES) ===
 const firebaseConfig = {
     apiKey: "AIzaSyA0u9w69i1bflyVju3At_cVweU_zDf4WnI",
     authDomain: "katchau-86464.firebaseapp.com",
     projectId: "katchau-86464",
-    storageBucket: "katchau-86464.firebasestorage.app",
+    storageBucket: "katchau-86464.appspot.com",
     messagingSenderId: "482704550968",
     appId: "1:482704550968:web:708a93ea7f1ca8898ecacd"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
 const usersCollection = collection(db, "users");
 const carsCollection = collection(db, "cars");
 
-// Caminho para a imagem de perfil padrão
 const DEFAULT_PROFILE_PIC = 'imagens/default-profile.png';
 
 // === FUNÇÕES PRINCIPAIS ===
@@ -142,10 +146,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const passwordConfirm = document.getElementById('reg-password-confirm').value;
             const email = document.getElementById('reg-email').value;
             const dob = document.getElementById('reg-dob').value;
+            const cpf = document.getElementById('reg-cpf').value;
+            const rg = document.getElementById('reg-rg').value;
             const regMessage = document.getElementById('reg-message');
 
             if (password !== passwordConfirm) {
                 regMessage.textContent = 'As senhas não coincidem. Tente novamente.';
+                regMessage.style.color = 'red';
+                isSubmitting = false;
+                return;
+            }
+
+            // Validação de idade (18 a 100 anos)
+            const today = new Date();
+            const birthDate = new Date(dob);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            if (age < 18 || age > 100) {
+                regMessage.textContent = 'Você deve ter entre 18 e 100 anos para se cadastrar.';
                 regMessage.style.color = 'red';
                 isSubmitting = false;
                 return;
@@ -166,7 +188,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     password: password, 
                     email: email,
                     dob: dob,
-                    profilePicUrl: null // Define a URL da foto de perfil como nula no cadastro
+                    cpf: cpf,
+                    rg: rg,
+                    profilePicUrl: null
                 };
 
                 await addDoc(usersCollection, userData);
@@ -226,36 +250,39 @@ document.addEventListener('DOMContentLoaded', function() {
             const messageEl = document.getElementById('message');
 
             if (carImgFile) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    try {
-                        const carData = {
-                            name: carName,
-                            year: carYear,
-                            km: carKm,
-                            description: carDescription,
-                            price: carPrice,
-                            img: e.target.result,
-                            postedBy: currentUser.username
-                        };
+                try {
+                    // Upload da imagem para o Firebase Storage
+                    const storageRef = ref(storage, `cars/${currentUser.username}/${Date.now()}_${carImgFile.name}`);
+                    const uploadTask = await uploadBytes(storageRef, carImgFile);
+                    const carImgUrl = await getDownloadURL(uploadTask.ref);
 
-                        await addDoc(carsCollection, carData);
-                        
-                        messageEl.textContent = 'Anúncio enviado com sucesso! Você será redirecionado para a página inicial.';
-                        messageEl.style.color = 'green';
-                        
-                        setTimeout(() => {
-                            window.location.href = 'index.html';
-                            isSubmitting = false;
-                        }, 2000);
-                    } catch (e) {
-                        console.error("Erro ao adicionar o carro: ", e);
-                        messageEl.textContent = 'Erro ao anunciar o carro. Tente novamente.';
-                        messageEl.style.color = 'red';
+                    // Adiciona o carro ao Firestore com a URL da imagem
+                    const carData = {
+                        name: carName,
+                        year: carYear,
+                        km: carKm,
+                        description: carDescription,
+                        price: carPrice,
+                        img: carImgUrl, // Salva o URL da imagem
+                        postedBy: currentUser.username
+                    };
+
+                    await addDoc(carsCollection, carData);
+                    
+                    messageEl.textContent = 'Anúncio enviado com sucesso! Você será redirecionado para a página inicial.';
+                    messageEl.style.color = 'green';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
                         isSubmitting = false;
-                    }
+                    }, 2000);
+
+                } catch (e) {
+                    console.error("Erro ao adicionar o carro: ", e);
+                    messageEl.textContent = 'Erro ao anunciar o carro. Tente novamente.';
+                    messageEl.style.color = 'red';
+                    isSubmitting = false;
                 }
-                reader.readAsDataURL(carImgFile);
             } else {
                 messageEl.textContent = 'Por favor, selecione uma imagem para o carro.';
                 messageEl.style.color = 'red';
@@ -395,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 reader.onload = async function(e) {
                     profilePic.src = e.target.result;
                     
-                    // Encontre o documento do usuário no Firestore para atualizar
                     const q = query(usersCollection, where("username", "==", currentUser.username));
                     const querySnapshot = await getDocs(q);
 
@@ -404,16 +430,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         const userRef = doc(db, "users", docId);
                         
                         try {
-                            await updateDoc(userRef, { profilePicUrl: e.target.result });
+                            const storageRef = ref(storage, `profiles/${currentUser.username}/${Date.now()}_${file.name}`);
+                            await uploadBytes(storageRef, file);
+                            const newProfilePicUrl = await getDownloadURL(storageRef);
+
+                            await updateDoc(userRef, { profilePicUrl: newProfilePicUrl });
                             
-                            // Atualiza o localStorage com o novo URL
-                            currentUser.profilePicUrl = e.target.result;
+                            currentUser.profilePicUrl = newProfilePicUrl;
                             localStorage.setItem('currentUser', JSON.stringify(currentUser));
                             
                             profilePicMessage.textContent = 'Foto de perfil salva com sucesso!';
                             profilePicMessage.style.color = 'green';
                             
-                            // Atualiza a imagem do cabeçalho
                             checkLoginStatus(); 
                         } catch (e) {
                             console.error("Erro ao salvar foto de perfil: ", e);

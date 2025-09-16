@@ -3,48 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Loja de Carros</title>
+    <title>Login - Katchau</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
-<body>
-
-<header>
-    <div class="logo">
-            <img src="imagens/favcon.ico" alt="logo katchau">
-    </div>
-    <nav class="main-nav">
-        <a href="index.html">Comprar</a>
-        <a href="index.html">Vender</a>
-        <a href="index.html">Serviços</a>
-        <a href="index.html">Ajuda</a>
-    </nav>
-    <div class="user-actions">
-        <a id="show-login-header" href="page1.html">Entrar</a>
-        <a href="perfil.html" id="profile-link" style="display: none;">
-            <img id="header-profile-pic" src="https://via.placeholder.com/40/e0e6ed/7f8c8d?text=User" alt="Foto de Perfil">
+<body class="login-body">
+    <header class="main-header">
+        <a href="index.html" class="logo-link">
+            <img src="imagens/logo.png" alt="Logo Katchau" class="logo">
         </a>
-    </div>
-</header>
-
-<main>
-    <div id="login-form" class="auth-form">
-        <h2>Faça Login</h2>
-        <form id="form-login">
-            <input type="text" id="log-username" placeholder="Usuário" required>
-            <input type="password" id="log-password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
-        <p id="log-message"></p>
-        <div class="auth-footer">
-            <p>Você não tem uma conta? <a href="page2.html">Crie aqui</a></p>
+        <nav class="main-nav">
+            <ul class="nav-links">
+                <li><a href="index.html">Catálogo</a></li>
+                <li><a href="vender.html">Vender</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <div id="show-login-header" class="header-login-links">
+                <a href="page1.html" class="login-link">Login</a> /
+                <a href="page2.html" class="register-link">Cadastrar</a>
+            </div>
+            <div id="profile-link" class="header-profile-section" style="display: none;">
+                <a href="perfil.html" class="profile-link">
+                    <img id="header-profile-pic" src="imagens/default-profile.png" alt="Foto de Perfil" class="header-profile-pic">
+                </a>
+            </div>
         </div>
-    </div>
-</main>
+    </header>
+
+    <main class="login-main">
+        <section class="login-container">
+            <h2>Login</h2>
+            <form id="form-login" class="login-form">
+                <div class="form-group">
+                    <label for="log-username">Nome de Usuário:</label>
+                    <input type="text" id="log-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="log-password">Senha:</label>
+                    <input type="password" id="log-password" required>
+                </div>
+                <button type="submit" class="submit-btn">Entrar</button>
+            </form>
+            <p id="log-message" class="message-text"></p>
+        </section>
+    </main>
 
     <script type="module" src="script.js"></script>
 </body>
