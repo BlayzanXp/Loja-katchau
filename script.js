@@ -3,12 +3,12 @@ import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc
 
 // === CONFIGURAÇÃO DO FIREBASE (SUBSTITUA PELAS SUAS CHAVES) ===
 const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_AUTH_DOMAIN",
-    projectId: "SEU_PROJECT_ID",
-    storageBucket: "SEU_STORAGE_BUCKET",
-    messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-    appId: "SEU_APP_ID"
+    apiKey: "AIzaSyA0u9w69i1bflyVju3At_cVweU_zDf4WnI",
+    authDomain: "katchau-86464.firebaseapp.com",
+    projectId: "katchau-86464",
+    storageBucket: "katchau-86464.firebasestorage.app",
+    messagingSenderId: "482704550968",
+    appId: "1:482704550968:web:708a93ea7f1ca8898ecacd"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
