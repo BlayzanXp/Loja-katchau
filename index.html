@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katchau</title>
+    <title>Loja de Carros - Katchau</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
+
     <header class="main-header">
         <a href="index.html" class="logo-link">
             <img src="imagens/logo.png" alt="Logo Katchau" class="logo">
         </a>
         <nav class="main-nav">
-            <ul class="nav-links">
-                <li><a href="index.html">Catálogo</a></li>
-                <li><a href="vender.html">Vender</a></li>
-            </ul>
-        </nav>
+            <a href="index.html">Comprar</a>
+            <a href="vender.html">Vender</a>
+            </nav>
         <div class="user-actions">
             <div id="show-login-header" class="header-login-links">
                 <a href="page1.html" class="login-link">Login</a> /
@@ -38,8 +42,48 @@
             </div>
         </section>
 
-        <section class="catalog-section">
-            <h2>Nosso Catálogo</h2>
+        <section class="store-section">
+            <h2>Lojas Oficiais</h2>
+            <div class="store-container">
+                <div class="store-card">
+                    <img src="imagens/audi.png" alt="Audi">
+                </div>
+                <div class="store-card">
+                    <img src="imagens/bmw.png" alt="BMW">
+                </div>
+                <div class="store-card">
+                    <img src="imagens/ford.png" alt="Ford">
+                </div>
+                <div class="store-card">
+                    <img src="imagens/mercedes.png" alt="Mercedes">
+                </div>
+                <div class="store-card">
+                    <img src="imagens/toyota.png" alt="Toyota">
+                </div>
+                <div class="store-card">
+                    <img src="imagens/porsche.png" alt="Porsche">
+                </div>
+            </div>
+        </section>
+
+        <section class="solutions-section">
+            <h2>Soluções Katchau</h2>
+            <div class="solutions-grid">
+                <a href="#car-listings" class="solution-card">
+                    <div class="icon-box"><i class="fa-solid fa-car"></i></div>
+                    <h3>Comprar</h3>
+                    <p>Encontre os melhores carros e oportunidades para você.</p>
+                </a>
+                <a href="vender.html" class="solution-card">
+                    <div class="icon-box"><i class="fa-solid fa-tags"></i></div>
+                    <h3>Vender</h3>
+                    <p>Venda fácil e rápido. Anuncie para milhões e feche o melhor negócio.</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="car-listings" class="catalog-section">
+            <h2>Carros à Venda</h2>
             <div class="car-grid">
                 </div>
         </section>
