@@ -1,3 +1,4 @@
+// Importa as funções necessárias do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
 
@@ -55,8 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const defaultCars = [
             { id: "system-1", name: "McQueen", year: "2006", km: "100", description: "7 vezes campeão da copa pistão.", price: "90.000.000.000", img: "imagens/carros/mcqueen.jfif", postedBy: "System" },
             { id: "system-2", name: "Mercedes-Benz Classe C", year: "2025", km: "0", description: "Para você que quer alto desempenho e tecnologia avançada.", price: "2.280.500", img: "imagens/carros/MERCEDES-BENZ AMG GT 63.jpeg", postedBy: "System" },
-            { id: "system-3", name: "Audi R8", year: "2021", km: "9851", description: "Elegância e tecnologia em um só lugar.", price: "1.600.000", img: "imagens/carros/audi r8.jpeg", postedBy: "System" },
-            { id: "system-4", name: "Porsche 911", year: "2024", km: "12415", description: "Carro esportivo epara você que quer chamar muita atenção na rua", price: "10 e uma coxinha e uma coca", img: "imagens/carros/911.jfif", postedBy: "System"}
+            { id: "system-3", name: "Audi R8", year: "2021", km: "9800", description: "Elegância e tecnologia em um só lugar.", price: "1.600.000", img: "imagens/carros/audi r8.jpeg", postedBy: "System" }
         ];
 
         let userCars = [];
