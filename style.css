@@ -362,15 +362,24 @@ h2 {
     background-color: #e74c3c;
 }
 
+/* Estilo específico para o botão de logout na página de perfil */
 .logout-btn {
     background-color: #e74c3c;
     color: white;
     border: none;
-    padding: 12px 20px;
+    padding: 10px 20px; /* Reduz o espaçamento interno */
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
-    width: 100%;
+    width: auto; /* Permite que o botão se ajuste ao conteúdo, não à largura total */
     font-size: 1rem;
     margin-top: 1rem;
+    display: block; /* Garante que o botão fique em uma nova linha */
+    margin-left: auto; /* Centraliza o botão */
+    margin-right: auto;
+    max-width: 200px; /* Define uma largura máxima para o botão */
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
 }
