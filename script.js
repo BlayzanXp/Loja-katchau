@@ -245,6 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
             profilePicInput.click();
         });
 
+        // Esta seção agora apenas exibe uma mensagem de erro em vez de tentar fazer o upload.
         profilePicInput.addEventListener('change', async function(event) {
             profilePicMessage.textContent = 'Erro: A funcionalidade de upload de fotos não está disponível sem o plano Blaze do Firebase.';
             profilePicMessage.style.color = 'red';
