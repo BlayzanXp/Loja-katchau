@@ -1,9 +1,6 @@
 // Importa as funções necessárias do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-storage.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
-
 
 // === CONFIGURAÇÃO DO FIREBASE (SUAS CHAVES) ===
 const firebaseConfig = {
@@ -17,7 +14,6 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
-const storage = getStorage(firebaseApp);
 const usersCollection = collection(db, "users");
 const carsCollection = collection(db, "cars");
 
@@ -26,7 +22,6 @@ const DEFAULT_PROFILE_PIC = 'imagens/default-profile.png';
 // === FUNÇÕES PRINCIPAIS ===
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Funções para gerenciar o estado do login
     function checkLoginStatus() {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const showLoginHeader = document.getElementById('show-login-header');
@@ -49,48 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Função para renderizar os carros no catálogo principal
-    async function renderAllCars() {
-        const carGrid = document.querySelector('.car-grid');
-        if (!carGrid) return;
-        
-        carGrid.innerHTML = ''; // Limpa os carros antigos
-
-        const defaultCars = [
-            { id: "system-1", name: "McQueen", year: "2006", km: "100", description: "7 vezes campeão da copa pistão.", price: "90.000.000.000", img: "imagens/carros/mcqueen.jfif", postedBy: "System" },
-            { id: "system-2", name: "Mercedes-Benz Classe C", year: "2025", km: "0", description: "Para você que quer alto desempenho e tecnologia avançada.", price: "2.280.500", img: "imagens/carros/MERCEDES-BENZ AMG GT 63.jpeg", postedBy: "System" },
-            { id: "system-3", name: "Audi R8", year: "2021", km: "9800", description: "Elegância e tecnologia em um só lugar.", price: "1.600.000", img: "imagens/carros/audi r8.jpeg", postedBy: "System" }
-        ];
-
-        let userCars = [];
-        try {
-            const querySnapshot = await getDocs(carsCollection);
-            querySnapshot.forEach(doc => {
-                userCars.push({ id: doc.id, ...doc.data() });
-            });
-        } catch (e) {
-            console.error("Erro ao carregar carros do Firebase: ", e);
-        }
-
-        const allCars = [...defaultCars, ...userCars];
-
-        allCars.forEach(car => {
-            const carCard = document.createElement('div');
-            carCard.className = 'car-card';
-            carCard.innerHTML = `
-                <img src="${car.img}" alt="Imagem do carro">
-                <h3>${car.name}</h3>
-                <p><strong>Ano:</strong> ${car.year}</p>
-                <p><strong>KM:</strong> ${car.km}</p>
-                <p class="car-description">${car.description}</p>
-                <p class="price">R$ ${car.price}</p>
-                <button class="buy-button">Comprar</button>
-            `;
-            carGrid.appendChild(carCard);
-        });
-    }
-
-    // Lógica de login (executada apenas em page1.html)
     const loginBtn = document.getElementById('form-login');
     if (loginBtn) {
         let isSubmitting = false;
@@ -130,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Lógica de cadastro (executada apenas em page2.html)
     const registerBtn = document.getElementById('form-register');
     if (registerBtn) {
         let isSubmitting = false;
@@ -157,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Validação de idade (18 a 100 anos)
             const today = new Date();
             const birthDate = new Date(dob);
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -212,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Lógica de logout (no perfil.html)
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(event) {
@@ -223,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Lógica para anunciar carro (em vender.html)
     const carForm = document.getElementById('car-form');
     if (carForm) {
         let isSubmitting = false;
@@ -249,33 +198,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const carImgFile = document.getElementById('car-images').files[0];
             const messageEl = document.getElementById('message');
 
+            // Esta parte do código vai tentar subir a imagem,
+            // mas vai falhar sem o plano Blaze.
             if (carImgFile) {
                 try {
-                    // Upload da imagem para o Firebase Storage
-                    const storageRef = ref(storage, `cars/${currentUser.username}/${Date.now()}_${carImgFile.name}`);
-                    const uploadTask = await uploadBytes(storageRef, carImgFile);
-                    const carImgUrl = await getDownloadURL(uploadTask.ref);
-
-                    // Adiciona o carro ao Firestore com a URL da imagem
-                    const carData = {
-                        name: carName,
-                        year: carYear,
-                        km: carKm,
-                        description: carDescription,
-                        price: carPrice,
-                        img: carImgUrl, // Salva o URL da imagem
-                        postedBy: currentUser.username
-                    };
-
-                    await addDoc(carsCollection, carData);
-                    
-                    messageEl.textContent = 'Anúncio enviado com sucesso! Você será redirecionado para a página inicial.';
-                    messageEl.style.color = 'green';
-                    
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                        isSubmitting = false;
-                    }, 2000);
+                    // Sem Storage, essa parte vai dar erro
+                    messageEl.textContent = 'Erro: Para enviar imagens, é necessário o plano Blaze do Firebase.';
+                    messageEl.style.color = 'red';
+                    isSubmitting = false;
 
                 } catch (e) {
                     console.error("Erro ao adicionar o carro: ", e);
@@ -291,7 +221,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // === LÓGICA DA PÁGINA DE PERFIL (executada apenas em perfil.html) ===
     const profileContainer = document.querySelector('.profile-container');
     if (profileContainer) {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -308,160 +237,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('profile-email').value = currentUser.email || '';
                 document.getElementById('profile-dob').value = currentUser.dob || '';
                 
-                // Lógica da foto de perfil
-                if (currentUser.profilePicUrl) {
-                    profilePic.src = currentUser.profilePicUrl;
-                    profilePicMessage.textContent = ''; // Limpa a mensagem
-                } else {
-                    profilePic.src = DEFAULT_PROFILE_PIC;
-                    profilePicMessage.textContent = 'Adicione uma foto de perfil!';
-                }
+                // Imagem de perfil padrão
+                profilePic.src = DEFAULT_PROFILE_PIC;
+
             } else {
                 window.location.href = 'page1.html'; 
             }
         }
-
-        async function handleEditCar(carId) {
-            const newName = prompt("Editar nome:");
-            const newYear = prompt("Editar ano:");
-            const newKm = prompt("Editar KM:");
-            const newPrice = prompt("Editar preço:");
         
-            if (newName || newYear || newKm || newPrice) {
-                const carRef = doc(db, "cars", carId);
-                const updatedData = {};
-                if (newName) updatedData.name = newName;
-                if (newYear) updatedData.year = newYear;
-                if (newKm) updatedData.km = newKm;
-                if (newPrice) updatedData.price = newPrice;
-        
-                try {
-                    await updateDoc(carRef, updatedData);
-                    alert('Anúncio editado com sucesso!');
-                    renderUserCars();
-                    renderAllCars();
-                } catch (e) {
-                    console.error("Erro ao editar o carro: ", e);
-                    alert('Erro ao editar o anúncio.');
-                }
-            }
-        }
-        
-        async function handleDeleteCar(carId) {
-            if (confirm('Tem certeza que deseja excluir este anúncio?')) {
-                try {
-                    await deleteDoc(doc(db, "cars", carId));
-                    alert('Anúncio excluído com sucesso!');
-                    renderUserCars();
-                    renderAllCars();
-                } catch (e) {
-                    console.error("Erro ao excluir o carro: ", e);
-                    alert('Erro ao excluir o anúncio.');
-                }
-            }
-        }
+        // Remove as funções de editar e deletar carros do perfil,
+        // pois elas dependem do Firebase.
 
-        async function renderUserCars() {
-            const userCarsSection = document.getElementById('user-cars-section');
-            if (!userCarsSection) return;
-
-            userCarsSection.innerHTML = `<h3>Meus Anúncios</h3>`;
-
-            const q = query(carsCollection, where("postedBy", "==", currentUser.username));
-            const querySnapshot = await getDocs(q);
-            const userCars = [];
-            querySnapshot.forEach(doc => {
-                userCars.push({ id: doc.id, ...doc.data() });
-            });
-
-            if (userCars.length > 0) {
-                const carList = document.createElement('div');
-                carList.className = 'car-list-user';
-                userCars.forEach(car => {
-                    const carItem = document.createElement('div');
-                    carItem.className = 'car-item';
-                    carItem.innerHTML = `
-                        <img src="${car.img}" alt="Imagem do carro">
-                        <div>
-                            <h4>${car.name}</h4>
-                            <p><strong>Ano:</strong> ${car.year}</p>
-                            <p><strong>KM:</strong> ${car.km}</p>
-                            <p>${car.description}</p>
-                            <p><strong>Preço:</strong> R$ ${car.price}</p>
-                            <div class="user-car-actions">
-                                <button class="edit-btn" data-car-id="${car.id}">Editar</button>
-                                <button class="delete-btn" data-car-id="${car.id}">Excluir</button>
-                            </div>
-                        </div>
-                    `;
-                    carList.appendChild(carItem);
-                });
-                userCarsSection.appendChild(carList);
-                
-                document.querySelectorAll('.edit-btn').forEach(button => {
-                    button.addEventListener('click', (e) => handleEditCar(e.target.dataset.carId));
-                });
-                document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', (e) => handleDeleteCar(e.target.dataset.carId));
-                });
-
-            } else {
-                userCarsSection.innerHTML += `<p>Você ainda não anunciou nenhum carro.</p>`;
-            }
-        }
-
-        // Trocar foto de perfil
         changePicBtn.addEventListener('click', function() {
             profilePicInput.click();
         });
 
         profilePicInput.addEventListener('change', async function(event) {
-            const file = event.target.files[0];
-            if (file && currentUser) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    profilePic.src = e.target.result;
-                    
-                    const q = query(usersCollection, where("username", "==", currentUser.username));
-                    const querySnapshot = await getDocs(q);
-
-                    if (!querySnapshot.empty) {
-                        const docId = querySnapshot.docs[0].id;
-                        const userRef = doc(db, "users", docId);
-                        
-                        try {
-                            const storageRef = ref(storage, `profiles/${currentUser.username}/${Date.now()}_${file.name}`);
-                            await uploadBytes(storageRef, file);
-                            const newProfilePicUrl = await getDownloadURL(storageRef);
-
-                            await updateDoc(userRef, { profilePicUrl: newProfilePicUrl });
-                            
-                            currentUser.profilePicUrl = newProfilePicUrl;
-                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                            
-                            profilePicMessage.textContent = 'Foto de perfil salva com sucesso!';
-                            profilePicMessage.style.color = 'green';
-                            
-                            checkLoginStatus(); 
-                        } catch (e) {
-                            console.error("Erro ao salvar foto de perfil: ", e);
-                            profilePicMessage.textContent = 'Erro ao salvar a foto. Tente novamente.';
-                            profilePicMessage.style.color = 'red';
-                        }
-                    } else {
-                         profilePicMessage.textContent = 'Erro: Usuário não encontrado no banco de dados.';
-                         profilePicMessage.style.color = 'red';
-                    }
-
-                    setTimeout(() => {
-                        profilePicMessage.textContent = '';
-                    }, 3000);
-                }
-                reader.readAsDataURL(file);
-            }
+            // A funcionalidade de upload foi removida pois requer o plano Blaze.
+            profilePicMessage.textContent = 'Erro: A funcionalidade de upload de fotos não está disponível sem o plano Blaze do Firebase.';
+            profilePicMessage.style.color = 'red';
+            setTimeout(() => {
+                profilePicMessage.textContent = '';
+            }, 3000);
         });
 
-        // Salvar dados do perfil
         saveProfileBtn.addEventListener('click', async function() {
             if (currentUser) {
                 const updatedData = {
@@ -497,9 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         loadProfileData();
-        renderUserCars();
     }
     
     checkLoginStatus();
-    renderAllCars();
 });

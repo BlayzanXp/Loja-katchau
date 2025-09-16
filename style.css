@@ -18,25 +18,31 @@ body {
 }
 
 /* --- Header --- */
-header {
+.main-header {
     background-color: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
-    padding: 1rem 3rem;
+    padding: 0.75rem 3rem; /* Ajuste para diminuir a altura verticalmente */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-header .logo img {
-    height: 30px;
+.logo-link {
+    display: flex;
+    align-items: center;
 }
 
-header .main-nav {
+.logo {
+    height: 40px; 
+    width: auto;
+}
+
+.main-nav {
     display: flex;
     gap: 1.5rem;
 }
 
-header .main-nav a {
+.main-nav a {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 500;
@@ -44,26 +50,8 @@ header .main-nav a {
     padding-bottom: 0.5rem;
 }
 
-header .main-nav a:hover {
+.main-nav a:hover {
     color: var(--primary-red);
-}
-
-.main-nav a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--primary-red);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
-}
-
-.main-nav a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
 }
 
 .user-actions {
@@ -72,26 +60,22 @@ header .main-nav a:hover {
     gap: 0.5rem;
 }
 
-#show-login-header, #logout-btn {
-    background: none;
-    border: none;
+.header-login-links a {
+    text-decoration: none;
     color: var(--text-color);
-    font-size: 1rem;
-    cursor: pointer;
     font-weight: 500;
 }
 
-/* Novo estilo para a foto de perfil no cabeçalho */
 #header-profile-pic {
-    width: 40px; /* Tamanho da foto */
+    width: 40px; 
     height: 40px;
-    border-radius: 50%; /* Deixa a foto redonda */
-    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    border-radius: 50%; 
+    object-fit: cover; 
     border: 2px solid var(--primary-red);
 }
 
 /* --- Main Content --- */
-main {
+.main-content {
     padding: 2rem 3rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -101,9 +85,9 @@ h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
-/* --- Lojas Oficiais Section --- */
 .store-section {
     margin-bottom: 3rem;
 }
@@ -114,12 +98,12 @@ h2 {
     gap: 2rem;
     overflow-x: auto;
     padding-bottom: 1rem;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .store-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
 }
 
 .store-card {
@@ -133,13 +117,13 @@ h2 {
     border-radius: 50%;
     border: 1px solid var(--border-color);
     transition: transform 0.2s;
+    object-fit: contain;
 }
 
 .store-card img:hover {
     transform: scale(1.05);
 }
 
-/* --- Soluções Section --- */
 .solutions-section {
     margin-bottom: 3rem;
 }
@@ -155,9 +139,11 @@ h2 {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 2rem;
-    position: relative;
     box-shadow: 0 4px 10px var(--shadow-light);
     transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
 }
 
 .solution-card:hover {
@@ -175,19 +161,7 @@ h2 {
     align-items: center;
     font-size: 1.5rem;
     color: var(--primary-red);
-    margin-bottom: 1rem;
-}
-
-.new-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: var(--primary-red);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 4px;
+    margin: 0 auto 1rem;
 }
 
 .solution-card h3 {
@@ -199,79 +173,6 @@ h2 {
 .solution-card p {
     font-size: 0.9rem;
     color: var(--text-light);
-}
-
-/* --- Formulários de Login e Cadastro --- */
-.auth-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    background-color: var(--card-bg);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-light);
-}
-
-.auth-form h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    color: var(--text-color);
-}
-
-.auth-form form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.auth-form input {
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-}
-
-.auth-form button {
-    background-color: var(--primary-red);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.auth-form button:hover {
-    background-color: #c0392b;
-}
-
-#log-message, #reg-message {
-    text-align: center;
-    margin-top: 1rem;
-    color: var(--text-color);
-}
-
-.auth-footer {
-    text-align: center;
-    margin-top: 1.5rem;
-}
-
-.auth-footer a {
-    color: var(--primary-red);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.auth-footer a:hover {
-    text-decoration: underline;
-}
-
-#welcome-message {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-#welcome-message h2 {
-    color: var(--primary-red);
 }
 
 .car-grid {
@@ -297,7 +198,9 @@ h2 {
 }
 
 .car-card img {
-    max-width: 100%;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 1rem;
 }
@@ -335,9 +238,8 @@ h2 {
     background-color: #c0392b;
 }
 
-/* --- Página de Perfil --- */
-.profile-container {
-    max-width: 600px;
+.login-container, .register-container, .vender-container, .profile-container {
+    max-width: 400px;
     margin: 2rem auto;
     background-color: var(--card-bg);
     padding: 2rem;
@@ -346,77 +248,118 @@ h2 {
     text-align: center;
 }
 
-.profile-pic-area {
-    margin-bottom: 2rem;
+.form-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #c0392b;
+}
+
+.message-text {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+.profile-container {
+    text-align: center;
+}
+
+.profile-pic-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 #profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border: 3px solid var(--border-color);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #change-pic-btn {
-    background-color: var(--primary-red);
+    background-color: #3498db;
     color: white;
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: 500;
-    margin-top: 1rem;
+    margin-top: 10px;
 }
 
-.profile-details {
-    text-align: left;
+.user-cars-section {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px var(--shadow-light);
 }
 
-.profile-field {
-    margin-bottom: 1.5rem;
+.car-list-user {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    justify-content: center;
 }
 
-.profile-field label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-
-.profile-field input {
-    width: 100%;
-    padding: 10px;
+.car-item {
+    background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: var(--text-color);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 5px var(--shadow-light);
 }
 
-#profile-username {
-    background-color: var(--bg-color);
-    cursor: not-allowed;
+.car-item img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
-#save-profile-btn {
-    background-color: var(--primary-red);
+.user-car-actions button {
+    background-color: #3498db;
     color: white;
     border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
+    padding: 8px 12px;
+    border-radius: 5px;
     cursor: pointer;
-    font-weight: 500;
-    width: 100%;
-    font-size: 1rem;
-    margin-top: 1rem;
+    font-size: 0.9em;
 }
 
-.profile-message {
-    text-align: center;
-    margin-top: 1rem;
-    color: green;
+.user-car-actions .delete-btn {
+    background-color: #e74c3c;
 }
 
 .logout-btn {
@@ -430,64 +373,4 @@ h2 {
     width: 100%;
     font-size: 1rem;
     margin-top: 1rem;
-}
-/* Estilos para a seção de Meus Anúncios no perfil */
-#user-cars-section {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-
-#user-cars-section h3 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
-}
-
-.car-list-user {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 2 ou 3 colunas de carros */
-    gap: 1rem;
-    justify-content: center; /* Centraliza os cards se não preencherem a linha toda */
-}
-
-.car-item {
-    background-color: var(--bg-color); /* Fundo um pouco mais claro */
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0 2px 5px var(--shadow-light);
-    transition: transform 0.2s;
-}
-
-.car-item:hover {
-    transform: translateY(-3px);
-}
-
-.car-item img {
-    width: 80px; /* Tamanho da imagem do carro */
-    height: 60px;
-    object-fit: cover; /* Garante que a imagem preencha sem distorcer */
-    border-radius: 4px;
-    flex-shrink: 0; /* Impede que a imagem encolha */
-}
-
-.car-item div {
-    text-align: left;
-}
-
-.car-item h4 {
-    font-size: 1rem;
-    margin: 0 0 0.25rem 0;
-    color: var(--text-color);
-    font-weight: 500;
-}
-
-.car-item p {
-    font-size: 0.85rem;
-    color: var(--text-light);
-    margin: 0;
 }
