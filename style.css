@@ -21,7 +21,7 @@ body {
 .main-header {
     background-color: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
-    padding: 0.75rem 3rem; /* Ajuste para diminuir a altura verticalmente */
+    padding: 0.75rem 3rem; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -367,19 +367,18 @@ h2 {
     background-color: #e74c3c;
     color: white;
     border: none;
-    padding: 10px 20px; /* Reduz o espaçamento interno */
+    padding: 10px 20px; 
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
-    width: auto; /* Permite que o botão se ajuste ao conteúdo, não à largura total */
+    width: auto; 
     font-size: 1rem;
     margin-top: 1rem;
-    display: block; /* Garante que o botão fique em uma nova linha */
-    margin-left: auto; /* Centraliza o botão */
+    display: block; 
+    margin-left: auto; 
     margin-right: auto;
-    max-width: 200px; /* Define uma largura máxima para o botão */
+    max-width: 200px; 
 }
-
 .logout-btn:hover {
     background-color: #c0392b;
 }

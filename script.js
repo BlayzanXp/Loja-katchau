@@ -198,11 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const carImgFile = document.getElementById('car-images').files[0];
             const messageEl = document.getElementById('message');
 
-            // Esta parte do código vai tentar subir a imagem,
-            // mas vai falhar sem o plano Blaze.
             if (carImgFile) {
                 try {
-                    // Sem Storage, essa parte vai dar erro
                     messageEl.textContent = 'Erro: Para enviar imagens, é necessário o plano Blaze do Firebase.';
                     messageEl.style.color = 'red';
                     isSubmitting = false;
@@ -237,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('profile-email').value = currentUser.email || '';
                 document.getElementById('profile-dob').value = currentUser.dob || '';
                 
-                // Imagem de perfil padrão
                 profilePic.src = DEFAULT_PROFILE_PIC;
 
             } else {
@@ -245,15 +241,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Remove as funções de editar e deletar carros do perfil,
-        // pois elas dependem do Firebase.
-
         changePicBtn.addEventListener('click', function() {
             profilePicInput.click();
         });
 
         profilePicInput.addEventListener('change', async function(event) {
-            // A funcionalidade de upload foi removida pois requer o plano Blaze.
             profilePicMessage.textContent = 'Erro: A funcionalidade de upload de fotos não está disponível sem o plano Blaze do Firebase.';
             profilePicMessage.style.color = 'red';
             setTimeout(() => {
